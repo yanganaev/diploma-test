@@ -7,8 +7,8 @@ on:
     paths:
       - app/**
 env:
-  ACR: mskepamdiplomaacr.azurecr.io
-  ECR: 786837428141.dkr.ecr.eu-central-1.amazonaws.com
+  ACR: k8stest-5cdc4cbc.hcp.centralus.azmk8s.io
+  
 jobs:
   build-and-deploy:
     runs-on: ubuntu-20.04
