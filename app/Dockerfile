@@ -16,10 +16,10 @@ RUN apt-get update && apt-get -y install \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
 WORKDIR /app
-RUN groupadd --gid 9999 nhltop \
+RUN groupadd --gid 9999 nhlusr \
     && useradd --home-dir /app \
         --uid 9999 \
-        --gid 9999 --shell /bin/bash nhltop
+        --gid 9999 --shell /bin/bash nhlusr
 USER nhltop
 COPY ./nhltop.py ./
 COPY ./app.py ./

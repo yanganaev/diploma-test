@@ -11,7 +11,7 @@ terraform {
 
   backend "azurerm" {
     resource_group_name  = "tfstate"
-    storage_account_name = "tfstate5870"
+    storage_account_name = "tfstate6501"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   }
@@ -27,7 +27,7 @@ resource "azurerm_resource_group" "rg" {
   location = var.azure_region
 
   tags = {
-    Owner = "mskawslearn1@gmail.com"
+    Owner = "feliks_ianganaev@epam.com"
   }
 }
 
@@ -77,7 +77,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
 # Container registry
 resource "azurerm_container_registry" "acr" {
-  name                = "mskepamdiplomaacr"
+  name                = "epamdiplomaacr"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   sku                 = "Basic"
@@ -94,7 +94,7 @@ resource "azurerm_role_assignment" "aks_to_acr_role" {
 ### Database resources
 
 resource "azurerm_mariadb_server" "dbsrv" {
-  name                = "mskepamdiplomadb"
+  name                = "epamdiplomadb"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -104,7 +104,7 @@ resource "azurerm_mariadb_server" "dbsrv" {
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
 
-  administrator_login          = "nhltop"
+  administrator_login          = "nhlusr"
   administrator_login_password = var.DB_PASSWORD
   version                      = "10.3"
   ssl_enforcement_enabled      = false
