@@ -8,8 +8,7 @@ RUN pip install -r requirements.txt
 
 FROM python:3.9-slim
 ENV PYTHONDONTWRITEBYTECODE 1
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y apt-utils \
+RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install \
       curl \
       libmariadb3 \
       libmariadb-dev \
