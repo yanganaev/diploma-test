@@ -19,7 +19,7 @@ services:
     ports:
       - 3306:3306
     environment:
-      MARIADB_RANDOM_ROOT_PASSWORD: no
+      MARIADB_RANDOM_ROOT_PASSWORD: yes
       MARIADB_DATABASE: nhlbase
       MARIADB_USER: nhlusr
       MARIADB_PASSWORD: "${DB_PASSWORD}"
