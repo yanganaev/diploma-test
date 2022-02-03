@@ -8,7 +8,7 @@ RUN pip install -r requirements.txt
 
 FROM python:3.9-slim
 ENV PYTHONDONTWRITEBYTECODE 1
-RUN apt-get update && apt-get -y install --no-install-recommends apt-utils\
+RUN apt-get update && apt-get -yq install --no-install-recommends apt-utils \
       curl \
       libmariadb3 \
       libmariadb-dev \
