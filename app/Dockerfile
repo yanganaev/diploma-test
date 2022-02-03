@@ -11,6 +11,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
+      apt-utils \
       curl \
       libmariadb3 \
       libmariadb-dev \
