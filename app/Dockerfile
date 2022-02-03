@@ -1,6 +1,6 @@
 FROM python:3.9 as builder
 ENV PYTHONDONTWRITEBYTECODE 1
-RUN apt-get update && apt-get -y install libmariadb3 libmariadb-dev
+RUN apt-get update && apt-get -y install apt-utils libmariadb3 libmariadb-dev
 RUN pip install --upgrade pip
 WORKDIR /app
 COPY ./requirements.txt .
