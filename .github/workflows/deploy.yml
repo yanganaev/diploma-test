@@ -1,4 +1,4 @@
-name: Build and deploy
+name: Build and deploy to Azure Kubernetes Service
 on:
   push:
     branches:
@@ -7,7 +7,11 @@ on:
     paths:
       - app/**
 env:
-  ACR: k8stest-5cdc4cbc.hcp.centralus.azmk8s.io
+
+ RESOURCE_GROUP: azure-k8stest          # set this to the resource group containing your AKS cluster
+ CLUSTER_NAME: k8stest              # set this to the name of your AKS cluster
+ REGISTRY_URL: MY_REGISTRY_URL              # set this to the URL of your registry
+
   
 jobs:
   build-and-deploy:
