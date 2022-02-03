@@ -20,7 +20,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
 WORKDIR /app
-RUN groupadd --gid 9999 nhlussr \
+RUN groupadd --gid 9999 nhlusr \
     && useradd --home-dir /app \
         --uid 9999 \
         --gid 9999 --shell /bin/bash nhlusr
