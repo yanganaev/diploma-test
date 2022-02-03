@@ -10,7 +10,7 @@ env:
 
  RESOURCE_GROUP: azure-k8stest          # set this to the resource group containing your AKS cluster
  CLUSTER_NAME: k8stest              # set this to the name of your AKS cluster
- REGISTRY_URL: MY_REGISTRY_URL              # set this to the URL of your registry
+ REGISTRY_URL: k8stest-5cdc4cbc.hcp.centralus.azmk8s.io              # set this to the URL of your registry
 
   
 jobs:
