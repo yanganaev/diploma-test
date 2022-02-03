@@ -51,7 +51,6 @@ jobs:
         fi
         # Set docker image path
         echo "IMAGE_ACR=${{ env.ACR }}/nhltop:$GITHUB_SHA" >> $GITHUB_ENV
-        echo "IMAGE_ECR=${{ env.ECR }}/nhltop:$GITHUB_SHA" >> $GITHUB_ENV
     - name: Build image
       run: |
         docker build "$GITHUB_WORKSPACE/app" \
