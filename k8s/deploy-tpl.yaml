@@ -28,7 +28,7 @@ spec:
           value: {{ DB_NAME }}
         - name: DB_HOST
           value: epamdiplomadb.mariadb.database.azure.com
-        image: mskepamdiplomaacr.azurecr.io/nhltop:{{ COMMIT_ID }}
+        image: epamdiplomaacr.azurecr.io/nhltop:{{ COMMIT_ID }}
         resources:
           limits:
             cpu: 500m
