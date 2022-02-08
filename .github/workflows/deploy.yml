@@ -1,4 +1,4 @@
-name: Build and deploy
+name: Build and deploy to Azure Kubernetes Service
 on:
   push:
     branches:
@@ -7,11 +7,15 @@ on:
     paths:
       - app/**
 env:
-  ACR: k8stest-5cdc4cbc.hcp.centralus.azmk8s.io
+
+ RESOURCE_GROUP: azure-k8stest          # set this to the resource group containing your AKS cluster
+ CLUSTER_NAME: k8stest              # set this to the name of your AKS cluster
+ REGISTRY_URL: k8stest-5cdc4cbc.hcp.centralus.azmk8s.io              # set this to the URL of your registry
+
   
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout repository 
       uses: actions/checkout@v2
@@ -29,7 +33,6 @@ jobs:
         sudo apt-get -y install libmariadb3 libmariadb-dev
         python -m pip install --upgrade pip
         pip install -r app/requirements.txt
-
     - name: Tests - run
       run: pytest -vv app
 
@@ -48,8 +51,6 @@ jobs:
         fi
         # Set docker image path
         echo "IMAGE_ACR=${{ env.ACR }}/nhltop:$GITHUB_SHA" >> $GITHUB_ENV
-        echo "IMAGE_ECR=${{ env.ECR }}/nhltop:$GITHUB_SHA" >> $GITHUB_ENV
-
     - name: Build image
       run: |
         docker build "$GITHUB_WORKSPACE/app" \

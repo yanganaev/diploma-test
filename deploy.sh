@@ -7,13 +7,13 @@ terraform -chdir=./azure/ apply
 terraform -chdir=./azure/ output -raw acr_username ; echo
 terraform -chdir=./azure/ output -raw acr_password ; echo
 terraform -chdir=./azure/ output -raw kube_config  ; echo
-az aks get-credentials --resource-group EPAM_Diploma --name aks1 --admin --overwrite-existing
+az aks get-credentials --resource-group azure-k8stest --name k8stest --admin --overwrite-existing
 echo "Waiting 60 seconds for ACR dns name to get ready ..."
 sleep 60
-az acr login --name mskepamdiplomaacr
+az acr login --name 135577b0-2610-495c-bee0-6150c858a2df
 docker build -t nhltop:$COMMIT_ID ./app/
-docker tag nhltop:$COMMIT_ID mskepamdiplomaacr.azurecr.io/nhltop:$COMMIT_ID
-docker push mskepamdiplomaacr.azurecr.io/nhltop:$COMMIT_ID
+docker tag nhltop:$COMMIT_ID k8stest-5cdc4cbc.hcp.centralus.azmk8s.io/nhltop:$COMMIT_ID
+docker push k8stest-5cdc4cbc.hcp.centralus.azmk8s.io/nhltop:$COMMIT_ID
 kubectl create ns dev
 kubectl create ns prod
 kubectl create ns monitoring
@@ -49,10 +49,10 @@ kubectl -n monitoring port-forward \
 cat <<EOF
 Development environment:
 
-    http://msk-epam-diploma-dev.westeurope.cloudapp.azure.com/
+    http://epam-diploma.eastus.cloudapp.azure.com/
 
 Production environment:
 
-    http://msk-epam-diploma-prod.westeurope.cloudapp.azure.com/
+    http://epam-diploma-prod.eastus.cloudapp.azure.com/
 
 EOF
