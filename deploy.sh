@@ -11,8 +11,8 @@ az aks get-credentials --resource-group azure-k8stest --name k8stest --admin --o
 echo "Waiting 60 seconds for ACR dns name to get ready ..."
 sleep 60
 az acr login --name 135577b0-2610-495c-bee0-6150c858a2df
-docker build -t nhltop:$COMMIT_ID ./app/
-docker tag nhltop:$COMMIT_ID k8stest-5cdc4cbc.hcp.centralus.azmk8s.io/nhltop:$COMMIT_ID
+docker build -t nhlapi:$COMMIT_ID ./app/
+docker tag nhlapi:$COMMIT_ID k8stest-5cdc4cbc.hcp.centralus.azmk8s.io/nhltop:$COMMIT_ID
 docker push k8stest-5cdc4cbc.hcp.centralus.azmk8s.io/nhltop:$COMMIT_ID
 kubectl create ns dev
 kubectl create ns prod
@@ -21,7 +21,7 @@ sed -s -e "s/{{ DB_NAME }}/test/"          \
        -e "s/{{ NAMESPACE }}/dev/"         \
        -e "s/{{ COMMIT_ID }}/$COMMIT_ID/"  \
        ./k8s/deploy-tpl.yaml | kubectl -n dev apply -f -
-sed -s -e "s/{{ DB_NAME }}/nhltop/"        \
+sed -s -e "s/{{ DB_NAME }}/nhlapi/"        \
        -e "s/{{ NAMESPACE }}/prod/"        \
        -e "s/{{ COMMIT_ID }}/$COMMIT_ID/"  \
        ./k8s/deploy-tpl.yaml | kubectl -n prod apply -f -

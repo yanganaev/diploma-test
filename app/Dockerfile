@@ -20,12 +20,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
 WORKDIR /app
-RUN groupadd --gid 9999 nhltop \
+RUN groupadd --gid 9999 nhlapi \
     && useradd --home-dir /app \
         --uid 9999 \
-        --gid 9999 --shell /bin/bash nhlusr
+        --gid 9999 --shell /bin/bash nhlapi
 USER nhlusr
-COPY ./nhltop.py ./
+COPY ./nhlapi.py ./
 COPY ./app.py ./
 COPY ./static/ ./static/
 COPY ./templates/ ./templates/
