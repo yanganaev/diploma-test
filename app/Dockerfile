@@ -20,7 +20,7 @@ RUN groupadd --gid 9999 nhlusr \
     && useradd --home-dir /app \
         --uid 9999 \
         --gid 9999 --shell /bin/bash nhlusr
-USER nhltop
+USER nhlusr
 COPY ./nhltop.py ./
 COPY ./app.py ./
 COPY ./static/ ./static/
