@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import nhlapi
+import nhltop
 
 def test_get_with_retries():
     reply = nhltop.get_with_retries('https://statsapi.web.nhl.com/api/v1/languages')

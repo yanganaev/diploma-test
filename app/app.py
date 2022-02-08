@@ -3,7 +3,7 @@ from prometheus_flask_exporter import PrometheusMetrics
 from markupsafe import escape
 from cpu_load_generator import load_all_cores
 import mariadb
-import nhlapi
+import nhltop
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)
@@ -24,7 +24,7 @@ def rt_main():
         db_conn = nhltop.db_connect()
     except mariadb.Error as err:
         return render_template('msg.j2', title = 'Database error', 
-                                message = f'<p>Error no: {err.errnnhlapio}, msg: {err.msg}</p>')
+                                message = f'<p>Error no: {err.errno}, msg: {err.msg}</p>')
 
     # Update schema if needed
     nhltop.db_update_schema(db_conn)

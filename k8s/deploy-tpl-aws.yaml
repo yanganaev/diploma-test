@@ -27,8 +27,8 @@ spec:
         - name: DB_NAME
           value: {{ DB_NAME }}
         - name: DB_HOST
-          value: mskepamdiplomadb.mariadb.database.azure.com
-        image: mskepamdiplomaacr.azurecr.io/nhltop:{{ COMMIT_ID }}
+          value: {{ DB_HOST }}
+        image: 786837428141.dkr.ecr.eu-central-1.amazonaws.com/nhltop:{{ COMMIT_ID }}
         resources:
           limits:
             cpu: 500m
@@ -45,8 +45,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    service.beta.kubernetes.io/azure-dns-label-name: msk-epam-diploma-{{ NAMESPACE }}
   labels:
     app: nhltop
     release: prometheus

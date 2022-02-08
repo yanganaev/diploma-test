@@ -1,4 +1,4 @@
-name: Build and deploy to Azure Kubernetes Service
+name: Build and deploy
 on:
   push:
     branches:
@@ -7,15 +7,11 @@ on:
     paths:
       - app/**
 env:
-
- RESOURCE_GROUP: azure-k8stest          # set this to the resource group containing your AKS cluster
- CLUSTER_NAME: k8stest              # set this to the name of your AKS cluster
- REGISTRY_URL: k8stest-5cdc4cbc.hcp.centralus.azmk8s.io              # set this to the URL of your registry
-
-  
+  ACR: mskepamdiplomaacr.azurecr.io
+  ECR: 786837428141.dkr.ecr.eu-central-1.amazonaws.com
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - name: Checkout repository 
       uses: actions/checkout@v2
@@ -33,6 +29,7 @@ jobs:
         sudo apt-get -y install libmariadb3 libmariadb-dev
         python -m pip install --upgrade pip
         pip install -r app/requirements.txt
+
     - name: Tests - run
       run: pytest -vv app
 
@@ -51,6 +48,8 @@ jobs:
         fi
         # Set docker image path
         echo "IMAGE_ACR=${{ env.ACR }}/nhltop:$GITHUB_SHA" >> $GITHUB_ENV
+        echo "IMAGE_ECR=${{ env.ECR }}/nhltop:$GITHUB_SHA" >> $GITHUB_ENV
+
     - name: Build image
       run: |
         docker build "$GITHUB_WORKSPACE/app" \
@@ -79,4 +78,24 @@ jobs:
       run: |
         kubectl -n ${{ env.NAMESPACE }} \
           set image deploy/nhltop *=${{ env.IMAGE_ACR }}
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-central-1
+
+    - name: Login to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Push image to AWS
+      run: docker push ${{ env.IMAGE_ECR }}
+    
+    - name: Set deployment image for AWS
+      uses: kodermax/kubectl-aws-eks@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_AWS }}
+      with:
+        args: -n ${{ env.NAMESPACE }} set image deploy/nhltop *=${{ env.IMAGE_ECR }}
   
