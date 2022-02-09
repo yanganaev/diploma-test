@@ -1,9 +1,9 @@
 variable "azure_region" {
-  default = "westeurope"
+  default = "eastus"
 }
 
 variable "location" {
-  default = "West Europe"
+  default = "East US"
 }
 
 variable "resource_group_name" {
@@ -33,7 +33,7 @@ variable "log_analytics_workspace_name" {
 
 # refer https://azure.microsoft.com/global-infrastructure/services/?products=monitor for log analytics available regions
 variable "log_analytics_workspace_location" {
-  default = "westeurope"
+  default = "eastus"
 }
 
 # refer https://azure.microsoft.com/pricing/details/monitor/ for log analytics pricing
