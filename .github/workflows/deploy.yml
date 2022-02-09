@@ -7,7 +7,7 @@ on:
     paths:
       - app/**
 env:
-  ACR: epamdiplomaacr.azurecr.io
+  ACR: k8s-9451bf9e.hcp.centralus.azmk8s.io
 jobs:
   build-and-deploy:
     runs-on: ubuntu-20.04
@@ -47,7 +47,6 @@ jobs:
         fi
         # Set docker image path
         echo "IMAGE_ACR=${{ env.ACR }}/nhltop:$GITHUB_SHA" >> $GITHUB_ENV
-        echo "IMAGE_ECR=${{ env.ECR }}/nhltop:$GITHUB_SHA" >> $GITHUB_ENV
 
     - name: Build image
       run: |
