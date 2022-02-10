@@ -7,7 +7,7 @@ on:
     paths:
       - app/**
 env:
-  ACR: k8s-9451bf9e.hcp.centralus.azmk8s.io
+  epamdiplomaacr.azurecr.io
 jobs:
   build-and-deploy:
     runs-on: ubuntu-20.04
