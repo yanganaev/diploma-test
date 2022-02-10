@@ -7,7 +7,7 @@ on:
     paths:
       - app/**
 env:
-  epamdiplomaacr.azurecr.io
+  aks1-fbbfda9c.hcp.eastus.azmk8s.io
 jobs:
   build-and-deploy:
     runs-on: ubuntu-20.04
