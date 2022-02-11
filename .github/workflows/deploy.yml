@@ -43,5 +43,5 @@ jobs:
     - name: Build and push image to ACR
       id: build-image
       run: |
-        docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t epamdiplomaacr.azurecr.io/nhltop:${{ github.sha }} --label dockerfile-path=aDockerfile
-        docker push epamdiplomaacr/nhltop:${{ github.sha }}
+          docker build . -t ${{ secrets.CLUSTER_NAME }}.azurecr.io/${{ secrets.APP_NAME }}:${{ github.sha }}
+          docker push ${{ secrets.CLUSTER_NAME }}.azurecr.io/${{ secrets.APP_NAME }}:${{ github.sha }}
