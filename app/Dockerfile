@@ -23,7 +23,7 @@ WORKDIR /app
 RUN groupadd --gid 9999 nhltop \
     && useradd --home-dir /app \
         --uid 9999 \
-        --gid 9999 --shell /bin/bash nhlapi
+        --gid 9999 --shell /bin/bash nhltop
 USER nhltop
 COPY ./nhlapi.py ./
 COPY ./app.py ./
