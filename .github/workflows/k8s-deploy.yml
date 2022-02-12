@@ -6,8 +6,7 @@ env:
   CLUSTER_NAME: aks1
   CLUSTER_RESOURCE_GROUP: EPAM_Diploma
   NAMESPACE: nhltop
-  SECRET: nhltop
-  APP_NAME: nhltop
+  APP_NAME: nhl
   
 jobs:
   build:
@@ -45,7 +44,6 @@ jobs:
         container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
         container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
         container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-        secret-name: ${{ env.SECRET }}
         namespace: ${{ env.NAMESPACE }}
         arguments: --force true
     
