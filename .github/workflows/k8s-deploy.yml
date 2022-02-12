@@ -25,6 +25,7 @@ jobs:
     - run: |
         docker build . -t epamdiplomaacr.azurecr.io/nhltop:${{ github.sha }}
         docker push epamdiplomaacr.azurecr.io/nhltop:${{ github.sha }}
+      working-directory: ./app
     
     # Set the target Azure Kubernetes Service (AKS) cluster. 
     - uses: azure/aks-set-context@v1
