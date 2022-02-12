@@ -6,7 +6,7 @@ env:
   CLUSTER_NAME: aks1
   CLUSTER_RESOURCE_GROUP: EPAM_Diploma
   NAMESPACE: nhltop
-  APP_NAME: nhltop
+  APP_NAME: nhl
   
 jobs:
   build:
