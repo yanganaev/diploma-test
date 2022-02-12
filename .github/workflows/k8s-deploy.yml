@@ -6,7 +6,7 @@ env:
   CLUSTER_NAME: aks1
   CLUSTER_RESOURCE_GROUP: EPAM_Diploma
   NAMESPACE: nhltop
-  SECRET: nhltop
+  SECRET: nhltauth
   APP_NAME: nhl
   
 jobs:
@@ -42,10 +42,10 @@ jobs:
     # Create image pull secret for ACR
     - uses: azure/k8s-create-secret@v1
       with:
-        container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
+        container-registry-url: epamdiplomaacr.azurecr.io
         container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
         container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-        secret-name: ${{ env.SECRET }}
+        secret-name: nhltauth
         namespace: ${{ env.NAMESPACE }}
         arguments: --force true
     
@@ -58,5 +58,5 @@ jobs:
         images: |
           ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
         imagepullsecrets: |
-          ${{ env.SECRET }}
+          nhltauth
         namespace: ${{ env.NAMESPACE }}
