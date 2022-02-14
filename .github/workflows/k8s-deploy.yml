@@ -7,7 +7,7 @@ env:
   CLUSTER_RESOURCE_GROUP: EPAM_Diploma
   NAMESPACE: nhltop
   SECRET: nhltauth
-  APP_NAME: nhl
+  APP_NAME: nhltop
   
 jobs:
   build:
