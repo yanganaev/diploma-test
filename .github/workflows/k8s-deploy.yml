@@ -5,9 +5,9 @@ env:
   REGISTRY_NAME: epamdiplomaacr
   CLUSTER_NAME: aks1
   CLUSTER_RESOURCE_GROUP: EPAM_Diploma
-  NAMESPACE: nhltop
+  NAMESPACE: nhlstat
   SECRET: nhltauth
-  APP_NAME: nhltop
+  APP_NAME: nhlstat
   
 jobs:
   build:
@@ -24,8 +24,8 @@ jobs:
     
     # Container build and push to a Azure Container Registry (ACR)
     - run: |
-        docker build . -t epamdiplomaacr.azurecr.io/nhltop:${{ github.sha }}
-        docker push epamdiplomaacr.azurecr.io/nhltop:${{ github.sha }}
+        docker build . -t epamdiplomaacr.azurecr.io/nhlstat:${{ github.sha }}
+        docker push epamdiplomaacr.azurecr.io/nhlstat:${{ github.sha }}
       working-directory: ./app
     
     # Set the target Azure Kubernetes Service (AKS) cluster. 
@@ -37,7 +37,11 @@ jobs:
     
     # Create namespace if doesn't exist
     - run: |
-        kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -
+        namespacePresent=`kubectl get namespace | grep nhlstat | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl create namespace nhlstat`
+        fi
     
     # Create image pull secret for ACR
     - uses: azure/k8s-create-secret@v1
