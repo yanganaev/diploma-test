@@ -6,6 +6,15 @@ on:
     paths:
       - app/**
 
+# Environment variables available to all jobs and steps in this workflow
+env:
+  REGISTRY_NAME: epamdiplomaacr
+  CLUSTER_NAME: akstest
+  CLUSTER_RESOURCE_GROUP: EPAM_Diploma
+  NAMESPACE: nhlstat
+  SECRET: nhltauth
+  APP_NAME: nhlapp
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -35,13 +44,53 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     
-    - name: Azure Login
-      uses: azure/login@v1
+# Connect to Azure Container Registry (ACR)
+    - uses: azure/docker-login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        login-server: epamdiplomaacr.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }} 
+        password: ${{ secrets.REGISTRY_PASSWORD }}
     
-    - name: Build and push image to ACR
-      id: build-image
-      run: |
-          docker build . -t ${{ secrets.CLUSTER_NAME }}.azurecr.io/${{ secrets.APP_NAME }}:${{ github.sha }}
-          docker push ${{ secrets.CLUSTER_NAME }}.azurecr.io/${{ secrets.APP_NAME }}:${{ github.sha }}
+    # Container build and push to a Azure Container Registry (ACR)
+    - run: |
+        docker build . -t epamdiplomaacr.azurecr.io/nhlapp:${{ github.sha }}
+        docker push epamdiplomaacr.azurecr.io/nhlapp:${{ github.sha }}
+      working-directory: ./app
+    
+    # Set the target Azure Kubernetes Service (AKS) cluster. 
+    - uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ env.CLUSTER_NAME }}
+        resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+    
+    # Create namespace if doesn't exist
+    - run: |
+        namespacePresent=`kubectl get namespace | grep nhlstat | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl create namespace nhlstat`
+        fi
+    
+    # Create image pull secret for ACR
+    - uses: azure/k8s-create-secret@v1
+      with:
+        container-registry-url: epamdiplomaacr.azurecr.io
+        container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        secret-name: nhltauth
+        namespace: ${{ env.NAMESPACE }}
+        arguments: --force true
+    
+    # Deploy app to AKS
+    - uses: azure/k8s-deploy@v1
+      with:
+        manifests: |
+          ${{ github.workspace }}/manifests/deployment.yaml
+          ${{ github.workspace }}/manifests/service.yaml
+        images: |
+          ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+        imagepullsecrets: |
+          nhltauth
+        namespace: ${{ env.NAMESPACE }}
+
