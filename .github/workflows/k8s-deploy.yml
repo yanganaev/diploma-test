@@ -3,11 +3,11 @@ on: [push]
 # Environment variables available to all jobs and steps in this workflow
 env:
   REGISTRY_NAME: epamdiplomaacr
-  CLUSTER_NAME: aks1
+  CLUSTER_NAME: akstest
   CLUSTER_RESOURCE_GROUP: EPAM_Diploma
   NAMESPACE: nhlstat
   SECRET: nhltauth
-  APP_NAME: nhlstat
+  APP_NAME: nhlapp
   
 jobs:
   build:
@@ -24,8 +24,8 @@ jobs:
     
     # Container build and push to a Azure Container Registry (ACR)
     - run: |
-        docker build . -t epamdiplomaacr.azurecr.io/nhlstat:${{ github.sha }}
-        docker push epamdiplomaacr.azurecr.io/nhlstat:${{ github.sha }}
+        docker build . -t epamdiplomaacr.azurecr.io/nhlapp:${{ github.sha }}
+        docker push epamdiplomaacr.azurecr.io/nhlapp:${{ github.sha }}
       working-directory: ./app
     
     # Set the target Azure Kubernetes Service (AKS) cluster. 
