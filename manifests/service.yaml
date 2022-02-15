@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-    name: nhlapp
+    name: nhltop
 spec:
     type: LoadBalancer
     ports:
     - port: 5000 
     selector:
-        app: nhlapp
+        app: nhltop
