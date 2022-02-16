@@ -2,8 +2,8 @@ on: [push]
 
 # Environment variables available to all jobs and steps in this workflow
 env:
-  REGISTRY_NAME: epamdiplomaacr
-  CLUSTER_NAME: akstest
+  REGISTRY_NAME: epmacr9081
+  CLUSTER_NAME: aks01
   CLUSTER_RESOURCE_GROUP: EPAM_Diploma
   NAMESPACE: nhlstat
   SECRET: nhltauth
@@ -41,14 +41,14 @@ jobs:
 # Connect to Azure Container Registry (ACR)
     - uses: azure/docker-login@v1
       with:
-        login-server: epamdiplomaacr.azurecr.io
+        login-server: ${{ env.REGISTRY_NAME }}.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }} 
         password: ${{ secrets.REGISTRY_PASSWORD }}
     
     # Container build and push to a Azure Container Registry (ACR)
     - run: |
-        docker build . -t epamdiplomaacr.azurecr.io/nhlapp:${{ github.sha }}
-        docker push epamdiplomaacr.azurecr.io/nhlapp:${{ github.sha }}
+        docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/nhlapp:${{ github.sha }}
+        docker push ${{ env.REGISTRY_NAME }}.azurecr.io/nhlapp:${{ github.sha }}
       working-directory: ./app
     
     # Set the target Azure Kubernetes Service (AKS) cluster. 
@@ -69,7 +69,7 @@ jobs:
     # Create image pull secret for ACR
     - uses: azure/k8s-create-secret@v1
       with:
-        container-registry-url: epamdiplomaacr.azurecr.io
+        container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
         container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
         container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
         secret-name: nhltauth
