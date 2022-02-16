@@ -57,15 +57,7 @@ jobs:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
         cluster-name: ${{ env.CLUSTER_NAME }}
         resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
-    
-    # Create namespace if doesn't exist
-    - run: |
-        namespacePresent=`kubectl get namespace | grep nhlstat | wc -l`
-        if [ $namespacePresent -eq 0 ]
-        then
-            echo `kubectl create namespace nhlstat`
-        fi
-    
+        
     # Create image pull secret for ACR
     - uses: azure/k8s-create-secret@v1
       with:
