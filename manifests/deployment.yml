@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: yanganaevdiplomatest 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yanganaevdiplomatest
+  template:
+    metadata:
+      labels:
+        app: yanganaevdiplomatest 
+    spec:
+      containers:
+        - name: yanganaevdiplomatest 
+          image: epmacr9081.azurecr.io/yanganaevdiplomatest
+          ports:
+          - containerPort: 5000
