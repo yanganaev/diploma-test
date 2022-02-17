@@ -3,7 +3,7 @@ on: [push]
 # Environment variables available to all jobs and steps in this workflow
 env:
   REGISTRY_NAME: epmacr9081
-  CLUSTER_NAME: aks01
+  CLUSTER_NAME: aks02
   CLUSTER_RESOURCE_GROUP: EPAM_Diploma
   NAMESPACE: nhlstat
   SECRET: nhltauth
